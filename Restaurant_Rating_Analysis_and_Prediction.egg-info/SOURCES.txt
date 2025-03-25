@@ -1,0 +1,7 @@
+setup.py
+Restaurant_Rating_Analysis_and_Prediction.egg-info/PKG-INFO
+Restaurant_Rating_Analysis_and_Prediction.egg-info/SOURCES.txt
+Restaurant_Rating_Analysis_and_Prediction.egg-info/dependency_links.txt
+Restaurant_Rating_Analysis_and_Prediction.egg-info/requires.txt
+Restaurant_Rating_Analysis_and_Prediction.egg-info/top_level.txt
+src/__init__.py

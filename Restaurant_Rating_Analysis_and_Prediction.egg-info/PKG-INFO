@@ -1,0 +1,13 @@
+Metadata-Version: 2.2
+Name: Restaurant_Rating_Analysis_and_Prediction
+Version: 0.0.1
+Author: Aditya Arya
+Author-email: adityaarya803@gmail.com
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: seaborn
+Requires-Dist: matplotlib
+Requires-Dist: flask
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-dist
