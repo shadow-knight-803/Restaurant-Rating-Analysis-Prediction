@@ -108,6 +108,6 @@ This project is licensed under the **MIT License**.
 
 ---
 
-📢 **Follow & Connect:** If you liked this project, give it a ⭐ on GitHub and connect with me on [LinkedIn](https://www.linkedin.com/in/aditya-kumar-arya/)!
+📢 **Follow & Connect:** If you liked this project, give it a ⭐ on GitHub and connect with me on [LinkedIn](https://www.linkedin.com/in/aditya-kumar-arya-25b154260/)!
 
 🚀 **Happy Coding!** 🎯
