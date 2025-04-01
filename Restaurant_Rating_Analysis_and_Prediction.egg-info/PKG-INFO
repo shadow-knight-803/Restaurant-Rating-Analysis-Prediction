@@ -6,8 +6,12 @@ Author-email: adityaarya803@gmail.com
 Requires-Dist: pandas
 Requires-Dist: numpy
 Requires-Dist: seaborn
-Requires-Dist: matplotlib
 Requires-Dist: flask
+Requires-Dist: matplotlib
+Requires-Dist: scikit-learn
+Requires-Dist: gunicorn
+Requires-Dist: plotly
+Requires-Dist: nbformat>=4.2.0
 Dynamic: author
 Dynamic: author-email
 Dynamic: requires-dist

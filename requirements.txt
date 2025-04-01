@@ -1,6 +1,10 @@
-pandas
+pandas 
 numpy
 seaborn
-matplotlib
 flask
+matplotlib
+scikit-learn
+gunicorn
+plotly
+nbformat>=4.2.0
 -e .

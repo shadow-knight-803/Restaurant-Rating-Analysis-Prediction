@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Rating Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .prediction-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+        .result-display {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .success-result {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error-result {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="prediction-container">
+            <div class="form-header">
+                <h1>Restaurant Rating Prediction</h1>
+                <p class="lead">Fill in the restaurant details to predict its rating</p>
+            </div>
+
+            {% if results %}
+            <div class="result-display success-result text-center">
+                {{ results }}
+            </div>
+            {% endif %}
+            
+            {% if error %}
+            <div class="result-display error-result text-center">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="/predict" method="post" class="mt-4">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="longitude" class="form-label">Longitude</label>
+                        <input type="number" step="any" class="form-control" id="longitude" name="longitude" required value="{{ data.longitude if data else '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="latitude" class="form-label">Latitude</label>
+                        <input type="number" step="any" class="form-control" id="latitude" name="latitude" required value="{{ data.latitude if data else '' }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="country_code" class="form-label">Country Code</label>
+                        <input type="number" class="form-control" id="country_code" name="country_code" required value="{{ data.country_code if data else '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" name="city" required value="{{ data.city if data else '' }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cuisines" class="form-label">Cuisines</label>
+                        <input type="text" class="form-control" id="cuisines" name="cuisines" required value="{{ data.cuisines if data else '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="average_cost_for_two" class="form-label">Average Cost for Two</label>
+                        <input type="number" step="any" class="form-control" id="average_cost_for_two" name="average_cost_for_two" required value="{{ data.average_cost_for_two if data else '' }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="currency" class="form-label">Currency</label>
+                        <input type="text" class="form-control" id="currency" name="currency" required value="{{ data.currency if data else '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="price_range" class="form-label">Price Range (1-4)</label>
+                        <select class="form-select" id="price_range" name="price_range" required>
+                            <option value="" disabled {% if not data or not data.price_range %}selected{% endif %}>Select Price Range</option>
+                            <option value="1" {% if data and data.price_range == '1' %}selected{% endif %}>$ (Budget)</option>
+                            <option value="2" {% if data and data.price_range == '2' %}selected{% endif %}>$$ (Moderate)</option>
+                            <option value="3" {% if data and data.price_range == '3' %}selected{% endif %}>$$$ (Expensive)</option>
+                            <option value="4" {% if data and data.price_range == '4' %}selected{% endif %}>$$$$ (Very Expensive)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="has_table_booking" class="form-label">Has Table Booking</label>
+                        <select class="form-select" id="has_table_booking" name="has_table_booking" required>
+                            <option value="" disabled {% if not data or not data.has_table_booking %}selected{% endif %}>Select Option</option>
+                            <option value="Yes" {% if data and data.has_table_booking == 'Yes' %}selected{% endif %}>Yes</option>
+                            <option value="No" {% if data and data.has_table_booking == 'No' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="has_online_delivery" class="form-label">Has Online Delivery</label>
+                        <select class="form-select" id="has_online_delivery" name="has_online_delivery" required>
+                            <option value="" disabled {% if not data or not data.has_online_delivery %}selected{% endif %}>Select Option</option>
+                            <option value="Yes" {% if data and data.has_online_delivery == 'Yes' %}selected{% endif %}>Yes</option>
+                            <option value="No" {% if data and data.has_online_delivery == 'No' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="is_delivering_now" class="form-label">Is Delivering Now</label>
+                        <select class="form-select" id="is_delivering_now" name="is_delivering_now" required>
+                            <option value="" disabled {% if not data or not data.is_delivering_now %}selected{% endif %}>Select Option</option>
+                            <option value="Yes" {% if data and data.is_delivering_now == 'Yes' %}selected{% endif %}>Yes</option>
+                            <option value="No" {% if data and data.is_delivering_now == 'No' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="votes" class="form-label">Votes</label>
+                        <input type="number" class="form-control" id="votes" name="votes" required value="{{ data.votes if data else '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="rating_text" class="form-label">Rating Text</label>
+                        <select class="form-select" id="rating_text" name="rating_text" required>
+                            <option value="" disabled {% if not data or not data.rating_text %}selected{% endif %}>Select Rating</option>
+                            <option value="Excellent" {% if data and data.rating_text == 'Excellent' %}selected{% endif %}>Excellent</option>
+                            <option value="Very Good" {% if data and data.rating_text == 'Very Good' %}selected{% endif %}>Very Good</option>
+                            <option value="Good" {% if data and data.rating_text == 'Good' %}selected{% endif %}>Good</option>
+                            <option value="Average" {% if data and data.rating_text == 'Average' %}selected{% endif %}>Average</option>
+                            <option value="Poor" {% if data and data.rating_text == 'Poor' %}selected{% endif %}>Poor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Predict Rating</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
